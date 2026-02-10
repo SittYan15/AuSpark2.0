@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.ksp)
     id("kotlin-kapt")
 }
 
@@ -53,12 +54,14 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:3.0.0")
     implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
     implementation("com.squareup.picasso:picasso:2.71828")
+    implementation(libs.androidx.work.runtime.ktx)
 
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")
     implementation("androidx.room:room-ktx:$room_version") // Helper for Kotlin Coroutines
-    kapt("androidx.room:room-compiler:$room_version") // "kapt" is the annotation processor
+
+    ksp("androidx.room:room-compiler:$room_version") // "kapt" is the annotation processor
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

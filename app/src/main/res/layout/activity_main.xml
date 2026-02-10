@@ -82,6 +82,8 @@
 
             <LinearLayout
                 android:id="@+id/dayCard0"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="86dp"
                 android:layout_height="120dp"
                 android:layout_marginEnd="12dp"
@@ -122,6 +124,8 @@
 
             <LinearLayout
                 android:id="@+id/dayCard1"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="86dp"
                 android:layout_height="120dp"
                 android:layout_marginEnd="12dp"
@@ -152,6 +156,8 @@
 
             <LinearLayout
                 android:id="@+id/dayCard2"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="86dp"
                 android:layout_height="120dp"
                 android:layout_marginEnd="12dp"
@@ -182,6 +188,8 @@
 
             <LinearLayout
                 android:id="@+id/dayCard3"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="86dp"
                 android:layout_height="120dp"
                 android:layout_marginEnd="12dp"
@@ -212,6 +220,8 @@
 
             <LinearLayout
                 android:id="@+id/dayCard4"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="86dp"
                 android:layout_height="120dp"
                 android:layout_marginEnd="12dp"

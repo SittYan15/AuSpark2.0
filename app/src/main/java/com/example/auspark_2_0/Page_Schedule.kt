@@ -59,7 +59,7 @@ class Page_Schedule : AppCompatActivity() {
         }
         findViewById<View>(R.id.navProfile).setOnClickListener {
             val intent = Intent(this, WebViewActivity::class.java)
-            intent.putExtra(WebViewActivity.EXTRA_URL, WebViewActivity.DEFAULT_URL)
+//            intent.putExtra(WebViewActivity.EXTRA_URL, WebViewActivity.DEFAULT_URL)
             startActivity(intent)
         }
 
