@@ -14,6 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AuSpark_2_0">
         <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AlarmSoundActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WebViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddEventActivity"
+            android:exported="false" />
+        <activity
             android:name=".Page_Schedule"
             android:exported="false" />
         <activity

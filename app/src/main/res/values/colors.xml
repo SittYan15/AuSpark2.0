@@ -2,4 +2,33 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="au_red">#E30613</color>
+    <color name="au_red_soft">#FCEBEB</color>
+    <color name="au_text_dark">#2B2F36</color>
+    <color name="au_text_muted">#7D8794</color>
+    <color name="au_border">#E5E8EE</color>
+    <color name="au_surface">#FFFFFF</color>
+    <color name="au_background">#F7F8FA</color>
+    <color name="au_header_start">#B9BCC1</color>
+    <color name="au_header_end">#FFFFFF</color>
+    <color name="au_time_blue">#3B82F6</color>
+    <color name="au_card_bg">#FFFFFF</color>
+    <color name="au_card_stroke">#EEF1F5</color>
+    <color name="au_tag_bg">#EFEFEF</color>
+    <color name="au_header_dark">#5C5C5C</color>
+    <color name="au_header_light">#CFCFCF</color>
+    <color name="au_chip_bg">#E6E6E6</color>
+    <color name="au_chip_text">#F2F2F2</color>
+    <color name="au_chip_active_bg">#FFFFFF</color>
+    <color name="au_chip_active_text">#C00017</color>
+    <color name="au_event_card_bg">#FFFFFF</color>
+    <color name="au_event_border">#E7E7E7</color>
+    <color name="au_event_accent">#6E79FF</color>
+    <color name="au_red_60">#99E30613</color>
+    <color name="au_card_border">#E3E6EB</color>
+    <color name="au_field_border">#D5DBE3</color>
+    <color name="au_field_bg">#FFFFFF</color>
+    <color name="au_chip_blue">#2D6BE8</color>
+    <color name="au_muted_icon">#8B94A3</color>
 </resources>

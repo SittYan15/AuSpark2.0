@@ -30,3 +30,16 @@ data class ClassEntity(
     val campus: String,        // "SUVARNABHUMI"
     val ethicSeminar: Boolean  // True/False
 )
+
+// Table 3: Custom Events
+@Entity(tableName = "custom_events")
+data class EventEntity(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val title: String,
+    val date: String,       // dd/MM/yyyy
+    val startTime: String,  // HH:mm
+    val endTime: String,    // HH:mm
+    val type: String,       // Class / Exam / Seminar
+    val location: String,
+    val description: String
+)

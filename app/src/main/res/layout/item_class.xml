@@ -3,59 +3,112 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:elevation="4dp"
-    app:cardCornerRadius="12dp">
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginBottom="4dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/ivTimeIcon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/bg_icon_circle"
+        android:contentDescription="Time"
+        android:src="@drawable/ic_calendar_outline"
+        android:tint="@color/au_text_muted"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_marginStart="10dp"
+        android:text="12:00 - 13:30"
+        android:textColor="@color/au_time_blue"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/ivTimeIcon"
+        app:layout_constraintTop_toTopOf="@id/ivTimeIcon"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <LinearLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/classCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/au_card_stroke"
+        app:strokeWidth="1dp"
+        app:layout_constraintStart_toStartOf="@id/tvTime"
+        app:layout_constraintTop_toBottomOf="@id/tvTime"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:padding="14dp">
 
             <TextView
-                android:id="@+id/tvTime"
+                android:id="@+id/tvCourseCode"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="09:00 - 12:00"
-                android:textColor="#2196F3"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:text="ELE2001 (643)"
+                android:textColor="@color/au_text_dark"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/ivChevron" />
+
+            <ImageView
+                android:id="@+id/ivChevron"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:contentDescription="More"
+                android:src="@drawable/ic_chevron_right"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCourseName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="ADVANCED ACADEMIC ENGLISH"
+                android:textColor="@color/au_text_dark"
+                android:textSize="13sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCourseCode"
+                app:layout_constraintEnd_toStartOf="@id/tvRoom" />
+
+            <TextView
+                android:id="@+id/tvInstructor"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Instructor"
+                android:textColor="@color/au_text_muted"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCourseName"
+                app:layout_constraintEnd_toStartOf="@id/tvRoom" />
 
             <TextView
                 android:id="@+id/tvRoom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#E0E0E0"
-                android:padding="4dp"
-                android:text="VMES1004"
-                android:textSize="12sp" />
-        </LinearLayout>
+                android:layout_marginTop="2dp"
+                android:background="@color/au_tag_bg"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="SG304"
+                android:textColor="@color/au_text_dark"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCourseCode" />
 
-        <TextView
-            android:id="@+id/tvCourseName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="CSX4407 Enterprise Application Dev"
-            android:textColor="#000000"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/tvInstructor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Instr: Chayapol Moemeng"
-            android:textColor="#757575"
-            android:textSize="14sp" />
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

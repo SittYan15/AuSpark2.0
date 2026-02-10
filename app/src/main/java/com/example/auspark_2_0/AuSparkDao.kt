@@ -31,4 +31,14 @@ interface AuSparkDao {
     @Query("SELECT * FROM class_schedule WHERE day = :dayName ORDER BY startTime ASC")
     suspend fun getClassesForDay(dayName: String): List<ClassEntity>
 
+    // --- Custom Events ---
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertEvent(event: EventEntity)
+
+    @Query("SELECT * FROM custom_events ORDER BY date ASC, startTime ASC")
+    suspend fun getAllEvents(): List<EventEntity>
+
+    @Query("SELECT * FROM custom_events WHERE type = :type ORDER BY date ASC, startTime ASC")
+    suspend fun getEventsByType(type: String): List<EventEntity>
+
 }

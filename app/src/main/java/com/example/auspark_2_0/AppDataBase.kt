@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [StudentEntity::class, ClassEntity::class], version = 1)
+@Database(entities = [StudentEntity::class, ClassEntity::class, EventEntity::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun auSparkDao(): AuSparkDao
 
@@ -19,7 +19,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "auspark_database" // Name of the file inside the phone
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 instance
             }

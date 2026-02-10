@@ -10,9 +10,10 @@ class ClassAdapter(private var classList: List<ClassEntity>) : RecyclerView.Adap
 
     class ClassViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvTime: TextView = view.findViewById(R.id.tvTime)
-        val tvRoom: TextView = view.findViewById(R.id.tvRoom)
+        val tvCourseCode: TextView = view.findViewById(R.id.tvCourseCode)
         val tvCourseName: TextView = view.findViewById(R.id.tvCourseName)
         val tvInstructor: TextView = view.findViewById(R.id.tvInstructor)
+        val tvRoom: TextView = view.findViewById(R.id.tvRoom)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClassViewHolder {
@@ -25,9 +26,10 @@ class ClassAdapter(private var classList: List<ClassEntity>) : RecyclerView.Adap
         val item = classList[position]
 
         holder.tvTime.text = "${item.startTime} - ${item.endTime}"
-        holder.tvRoom.text = item.room
+        holder.tvCourseCode.text = "${item.courseCode} (${item.section})"
         holder.tvCourseName.text = item.courseName
         holder.tvInstructor.text = item.instructor
+        holder.tvRoom.text = item.room
     }
 
     override fun getItemCount() = classList.size
