@@ -43,3 +43,14 @@ data class EventEntity(
     val location: String,
     val description: String
 )
+
+@Entity(tableName = "exam_schedule")
+data class ExamEntity(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val courseCode: String,
+    val courseName: String,
+    val examDate: String, // e.g., "5 March 2026"
+    val examTime: String, // e.g., "09:00 - 12:00"
+    val room: String,
+    val seat: String      // Set to "N/A" if not found in raw text
+)

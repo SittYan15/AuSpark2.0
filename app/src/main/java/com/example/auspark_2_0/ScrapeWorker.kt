@@ -12,19 +12,23 @@ class ScrapeWorker(appContext: Context, params: WorkerParameters) :
     override suspend fun doWork(): Result {
         // Retrieve data passed from Activity
         val targetUrl = inputData.getString("TARGET_URL") ?: return Result.failure()
+        val examUrl = inputData.getString("TARGET_URL_EXAM") ?: return Result.failure()
         val cookieString = inputData.getString("COOKIES") ?: return Result.failure()
 
         return try {
-            Log.d("ScrapeWorker", "Starting background scrape...")
+            Log.d("ScrapeWorker", "Starting multi-page scrape...")
 
             // 1. Perform Jsoup Scrape
-            val doc = Jsoup.connect(targetUrl)
-                .header("Cookie", cookieString)
-                .userAgent("Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.0.0 Mobile Safari/537.36")
-                .timeout(30000)
-                .get()
+//            val doc = Jsoup.connect(targetUrl)
+//                .header("Cookie", cookieString)
+//                .userAgent("Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.0.0 Mobile Safari/537.36")
+//                .timeout(30000)
+//                .get()
 
-            val rawData = doc.body().text()
+            val scheduleDoc = Jsoup.connect(targetUrl).header("Cookie", cookieString).get()
+//            val examDoc = Jsoup.connect(examUrl).header("Cookie", cookieString).get()
+
+            val rawData = scheduleDoc.body().text()
 
             // 2. Parse the data
             val parser = AuSparkParser()
@@ -62,6 +66,31 @@ class ScrapeWorker(appContext: Context, params: WorkerParameters) :
             dao.insertClasses(classEntities)
 
             Log.d("ScrapeWorker", "Background Scrape & Save Successful!")
+
+
+            // 1. Connect to the Examination Page
+            val doc2 = Jsoup.connect(examUrl)
+                .header("Cookie", cookieString)
+                .userAgent("Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.0.0 Mobile Safari/537.36")
+                .timeout(30000)
+                .get()
+
+            // 2. Extract Raw Body Text
+            val rawExamData = doc2.body().text()
+
+            // Inside doWork() after you get rawExamData
+            val parsedExams = parser.parseExams(rawExamData)
+
+            // Clear and Save to Room
+            dao.clearExams()
+            dao.insertExams(parsedExams)
+
+            Log.d("ScrapeWorker", "Successfully parsed and saved ${parsedExams.size} exams.")
+
+            val alarmController = AlarmController(applicationContext)
+            // Re-schedule all alarms now that the database has fresh data
+            alarmController.scheduleAllAlarms()
+
             Result.success()
         } catch (e: Exception) {
             Log.e("ScrapeWorker", "Background Scrape Failed", e)

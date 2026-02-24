@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
 
 class Page_Schedule : AppCompatActivity() {
     private lateinit var db: AppDatabase
@@ -37,6 +40,7 @@ class Page_Schedule : AppCompatActivity() {
         db = AppDatabase.getDatabase(this)
         val recycler = findViewById<RecyclerView>(R.id.eventsRecycler)
         recycler.layoutManager = LinearLayoutManager(this)
+        // FIX 1: Ensure initial list type matches ScheduleUIItem
         adapter = EventAdapter(emptyList())
         recycler.adapter = adapter
 
@@ -140,16 +144,61 @@ class Page_Schedule : AppCompatActivity() {
 
     private fun loadEvents() {
         CoroutineScope(Dispatchers.IO).launch {
-            val events = if (currentFilter == "All") {
+            val uiList = mutableListOf<ScheduleUIItem>()
+            val dao = db.auSparkDao()
+
+            // 1. Fetch Manual Events
+            val manualEvents = if (currentFilter == "All") {
                 db.auSparkDao().getAllEvents()
             } else {
                 db.auSparkDao().getEventsByType(currentFilter)
             }
+            uiList.addAll(manualEvents.map {
+                ScheduleUIItem(
+                    it.title,
+                    "${it.startTime} - ${it.endTime}",
+                    it.type,
+                    it.location,
+                    false
+                )
+            })
+
+            // 2. Fetch Scraped Classes (If "All" or "Class" filter is active)
+            if (currentFilter == "All" || currentFilter == "Class") {
+                val scrapedClasses = db.auSparkDao().getAllClasses()
+                uiList.addAll(scrapedClasses.map {
+                    ScheduleUIItem(
+                        it.courseName,
+                        "${it.day}: ${it.startTime}-${it.endTime}",
+                        "Class",
+                        it.room,
+                        true
+                    )
+                })
+            }
+
+            // 3. Fetch Scraped Exams (If "All" or "Exam" filter is active)
+            if (currentFilter == "All" || currentFilter == "Exam") {
+                val scrapedExams = db.auSparkDao().getAllExams()
+                uiList.addAll(scrapedExams.map {
+                    ScheduleUIItem(
+                        it.courseName,
+                        "${it.examDate} (${it.examTime})",
+                        "Exam",
+                        it.room,
+                        true
+                    )
+                })
+            }
+
             withContext(Dispatchers.Main) {
-                adapter.update(events)
+                adapter.update(uiList)
+
+                // Handle Empty State Visibility
                 val emptyCard = findViewById<View>(R.id.emptyCard)
                 val recycler = findViewById<RecyclerView>(R.id.eventsRecycler)
-                if (events.isEmpty()) {
+
+                if (uiList.isEmpty()) {
                     emptyCard.visibility = View.VISIBLE
                     recycler.visibility = View.GONE
                 } else {

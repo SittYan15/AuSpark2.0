@@ -21,6 +21,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import android.os.Build // <--- This fixes 'Build'
+import android.app.NotificationChannel // Required for the channel
+import android.app.NotificationManager // Required for the manager
+import android.content.Context // Required for getSystemService
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +51,22 @@ class MainActivity : AppCompatActivity() {
         setupScheduleSection()
         setupNavigation()
         setupDayCards()
+        createNotificationChannel()
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Alarm Channel"
+            val descriptionText = "Channel for AU Spark Alarms"
+            val importance = NotificationManager.IMPORTANCE_HIGH // Crucial for pop-ups
+            val channel = NotificationChannel("ALARM_CHANNEL_ID", name, importance).apply {
+                description = descriptionText
+                setSound(null, null) // We handle sound in our Service
+            }
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
 //    override fun onWindowFocusChanged(hasFocus: Boolean) {

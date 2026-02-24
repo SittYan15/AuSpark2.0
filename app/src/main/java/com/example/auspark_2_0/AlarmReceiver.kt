@@ -1,34 +1,48 @@
 package com.example.auspark_2_0
 
+import android.app.NotificationManager
+import android.app.PendingIntent // <--- This is the one causing the error
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
-import android.os.Vibrator
-import android.os.VibrationEffect
-import android.os.Build
+import androidx.core.app.NotificationCompat
+import android.util.Log
 
 class AlarmReceiver : BroadcastReceiver() {
-
     override fun onReceive(context: Context, intent: Intent) {
-        // Use the safe call operator or requireContext to avoid nullability issues
-        val ctx = context ?: return
 
-        Toast.makeText(ctx, "ALARM TRIGGERED!", Toast.LENGTH_LONG).show()
+        val title = intent.getStringExtra("EVENT_TITLE") ?: "Class Reminder"
 
-        val vibrator = ctx.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+// 1. Start the Sound/Vibration engine
+        val serviceIntent = Intent(context, AlarmService::class.java)
+        context.startService(serviceIntent)
 
-        // Pattern: Sleep 0ms, Vibrate 500ms, Sleep 500ms, Vibrate 500ms
-        val pattern = longArrayOf(0, 500, 500, 500)
+// 2. Create the Intent for the Stop Page
+        val dismissIntent = Intent(context, AlarmDismissActivity::class.java).apply {
+            // These three flags ensure the activity pops up even if the app is open
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // -1 means do not repeat. Change to 0 to repeat until cancelled.
-            vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1))
-        } else {
-            @Suppress("DEPRECATION")
-            vibrator.vibrate(pattern, -1)
+            putExtra("EVENT_TITLE", title)
         }
 
-        // TODO: Trigger a Notification here to ensure the user sees it!
+        val pendingIntent = PendingIntent.getActivity(
+            context, 0, dismissIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE // Fixed line 25
+        )
+
+// 3. Build a high-priority notification that "launches" the UI
+        val builder = androidx.core.app.NotificationCompat.Builder(context, "ALARM_CHANNEL_ID")
+            .setSmallIcon(R.drawable.ic_schedule) // Ensure this exists in your drawables
+            .setContentTitle("AU Spark Alarm")
+            .setContentText(title)
+            .setPriority(androidx.core.app.NotificationCompat.PRIORITY_HIGH)
+            .setCategory(androidx.core.app.NotificationCompat.CATEGORY_ALARM)
+            .setFullScreenIntent(pendingIntent, true) // This pops up the UI!
+            .setAutoCancel(true)
+
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as android.app.NotificationManager
+        notificationManager.notify(1, builder.build())
     }
 }

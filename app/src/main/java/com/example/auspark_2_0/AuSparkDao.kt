@@ -41,4 +41,19 @@ interface AuSparkDao {
     @Query("SELECT * FROM custom_events WHERE type = :type ORDER BY date ASC, startTime ASC")
     suspend fun getEventsByType(type: String): List<EventEntity>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertExams(exams: List<ExamEntity>)
+
+    @Query("DELETE FROM exam_schedule")
+    suspend fun clearExams()
+
+    @Query("SELECT * FROM exam_schedule ORDER BY id ASC")
+    suspend fun getAllExams(): List<ExamEntity>
+
+    // Add these to your existing interface
+    @Query("SELECT * FROM exam_schedule ORDER BY examDate ASC")
+    suspend fun getAllExamsByDate(): List<ExamEntity>
+
+    @Query("SELECT * FROM class_schedule ORDER BY day ASC, startTime ASC")
+    suspend fun getAllClassesByDate(): List<ClassEntity>
 }

@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <application
         android:allowBackup="true"
@@ -16,40 +17,41 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AuSpark_2_0">
+
         <activity
-            android:name=".SettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AlarmSoundActivity"
-            android:exported="false" />
-        <activity
-            android:name=".WebViewActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AddEventActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Page_Schedule"
-            android:exported="false" />
-        <activity
-            android:name=".ScheduleDisplay"
-            android:exported="false" />
-        <activity
-            android:name=".ClassSchedule"
-            android:exported="false" />
-        <activity
-            android:name=".DataTestingActivity"
-            android:exported="false" />
+            android:name=".AlarmDismissActivity"
+            android:exported="false"
+            android:showWhenLocked="true"
+            android:turnScreenOn="true"
+            android:launchMode="singleInstance" />
+
+        <activity android:name=".SettingsActivity" android:exported="false" />
+        <activity android:name=".AlarmSoundActivity" android:exported="false" />
+        <activity android:name=".WebViewActivity" android:exported="false" />
+        <activity android:name=".AddEventActivity" android:exported="false" />
+        <activity android:name=".Page_Schedule" android:exported="false" />
+        <activity android:name=".ScheduleDisplay" android:exported="false" />
+        <activity android:name=".ClassSchedule" android:exported="false" />
+        <activity android:name=".DataTestingActivity" android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".AlarmReceiver" android:enabled="true" android:exported="false" />
+
+        <service
+            android:name=".AlarmService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

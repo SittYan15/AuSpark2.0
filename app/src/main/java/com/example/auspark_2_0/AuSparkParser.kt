@@ -85,4 +85,51 @@ class AuSparkParser {
 
         return StudentPrasedResult(profile, scheduleList)
     }
+
+    fun parseExams(rawText: String): List<ExamEntity> {
+        val examList = mutableListOf<ExamEntity>()
+
+        // Pattern captures: Date(1), Day(2), Start(3), End(4), Code(5), Section(6), Name(7), Room(8)
+        val examRegex = Regex("(\\d{1,2})\\s+(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)\\s+(\\d{2}:\\d{2})\\s+(\\d{2}:\\d{2})\\s+([A-Z]{2,4}\\d{4,5})\\s+\\((\\d+)\\)\\s+(.*?)\\s+Room:\\s+([A-Z0-9/]+|N/A)")
+
+        // Helper to find which month we are currently in as we scroll through the text
+        var currentMonthYear = "Unknown 2026"
+        val monthRegex = Regex("(January|February|March|April|May|June|July|August|September|October|November|December)\\s+(\\d{4})")
+
+        // We split by lines or large spaces to process sequentially
+        val parts = rawText.split(" ")
+        // However, since regex findall is easier with the full block:
+        val matches = examRegex.findAll(rawText)
+
+        for (match in matches) {
+            val dateDay = match.groupValues[1]
+            val startTime = match.groupValues[3]
+            val endTime = match.groupValues[4]
+            val courseCode = match.groupValues[5]
+            val section = match.groupValues[6]
+            val courseName = match.groupValues[7].trim()
+            val room = match.groupValues[8]
+
+            // Find the month that appeared most recently BEFORE this match
+            val textBeforeMatch = rawText.substring(0, match.range.first)
+            val monthMatch = monthRegex.findAll(textBeforeMatch).lastOrNull()
+            if (monthMatch != null) {
+                currentMonthYear = "${monthMatch.groupValues[1]} ${monthMatch.groupValues[2]}"
+            }
+
+            examList.add(
+                ExamEntity(
+                    courseCode = "$courseCode ($section)",
+                    courseName = courseName,
+                    examDate = "$dateDay $currentMonthYear",
+                    examTime = "$startTime - $endTime",
+                    room = room,
+                    seat = "N/A" // AU Spark raw text doesn't always show seat until closer to the date
+                )
+            )
+        }
+        return examList
+    }
+
+
 }
