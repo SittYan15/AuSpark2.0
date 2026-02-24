@@ -136,9 +136,6 @@ class MainActivity : AppCompatActivity() {
             findViewById(R.id.dateLabel4)
         )
 
-        val todayLabel = findViewById<TextView>(R.id.todayLabel0)
-        todayLabel.visibility = View.VISIBLE
-
         val calendar = Calendar.getInstance(Locale.getDefault())
         for (i in dayCards.indices) {
             val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
@@ -149,7 +146,6 @@ class MainActivity : AppCompatActivity() {
                 dayCards[i].setBackgroundResource(R.drawable.bg_day_selected)
                 dayLabels[i].setTextColor(getColor(R.color.white))
                 dateLabels[i].setTextColor(getColor(R.color.white))
-                todayLabel.visibility = View.VISIBLE
                 // Set initial selection (Today)
                 updateCardSelection(dayCards[i], dayLabels[i], dateLabels[i])
             } else {
