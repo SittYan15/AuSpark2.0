@@ -123,12 +123,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupNavigation() {
         findViewById<View>(R.id.navSchedule).setOnClickListener {
-            val intent = Intent(this, Page_Schedule::class.java)
+// Change 'TargetActivity' to 'Page_Schedule'
+            val intent = Intent(this, Page_Schedule::class.java).apply {
+                // Use this flag to prevent the "page layering" bug we discussed
+                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            }
             startActivity(intent)
         }
         findViewById<View>(R.id.navProfile).setOnClickListener {
-            val intent = Intent(this, WebViewActivity::class.java)
-//            intent.putExtra(WebViewActivity.EXTRA_URL, WebViewActivity.DEFAULT_URL)
+// Change 'TargetActivity' to 'Page_Schedule'
+            val intent = Intent(this, Page_Schedule::class.java).apply {
+                // Use this flag to prevent the "page layering" bug we discussed
+                flags = Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            }
             startActivity(intent)
         }
     }

@@ -19,6 +19,21 @@
         android:theme="@style/Theme.AuSpark_2_0">
 
         <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Page_Schedule"
+            android:exported="false"
+            android:launchMode="singleTop" />
+
+        <activity
             android:name=".AlarmDismissActivity"
             android:exported="false"
             android:showWhenLocked="true"
@@ -29,19 +44,9 @@
         <activity android:name=".AlarmSoundActivity" android:exported="false" />
         <activity android:name=".WebViewActivity" android:exported="false" />
         <activity android:name=".AddEventActivity" android:exported="false" />
-        <activity android:name=".Page_Schedule" android:exported="false" />
         <activity android:name=".ScheduleDisplay" android:exported="false" />
         <activity android:name=".ClassSchedule" android:exported="false" />
         <activity android:name=".DataTestingActivity" android:exported="false" />
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <service
             android:name=".AlarmService"

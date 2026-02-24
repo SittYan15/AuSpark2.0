@@ -13,6 +13,13 @@ class AlarmService : Service() {
     private var vibrator: Vibrator? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        // 1. Check if the intent contains a "STOP" action
+        if (intent?.action == "ACTION_STOP_ALARM") {
+            stopSelf() // This triggers onDestroy() which releases the player
+            return START_NOT_STICKY
+        }
+
         val prefs = getSharedPreferences("AU_SPARK_SETTINGS", Context.MODE_PRIVATE)
 
         // 1. Handle Audio
